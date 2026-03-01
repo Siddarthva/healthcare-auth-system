@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
+  NURSE
+  PATIENT
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  name          String
+  role          Role
+  status        String         @default("ACTIVE") // ACTIVE, SUSPENDED
+  isVerified    Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  refreshTokens RefreshToken[]
+  auditLogs     AuditLog[]
+  asPatient     Patient?
+
+  assignedPatients Assignment[] @relation("StaffAssignments")
+  consentsGiven    Consent[]    @relation("PatientConsents")
+  consentsReceived Consent[]    @relation("StaffConsents")
+  emergencies      EmergencyAccess[] @relation("DoctorEmergencies")
+}
+
+model Patient {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dateOfBirth DateTime
+  medicalId   String   @unique
+  history     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  assignments Assignment[] @relation("PatientAssignments")
+  emergencies EmergencyAccess[] @relation("PatientEmergencies")
+}
+
+model Assignment {
+  id        String   @id @default(uuid())
+  staffId   String
+  patientId String
+  createdAt DateTime @default(now())
+
+  staff   User    @relation("StaffAssignments", fields: [staffId], references: [id], onDelete: Cascade)
+  patient Patient @relation("PatientAssignments", fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, patientId])
+}
+
+model Consent {
+  id         String   @id @default(uuid())
+  patientId  String
+  staffId    String
+  status     String   @default("ACTIVE") // ACTIVE, REVOKED
+  createdAt  DateTime @default(now())
+  revokedAt  DateTime?
+
+  patient User @relation("PatientConsents", fields: [patientId], references: [id], onDelete: Cascade)
+  staff   User @relation("StaffConsents", fields: [staffId], references: [id], onDelete: Cascade)
+}
+
+model EmergencyAccess {
+  id         String   @id @default(uuid())
+  doctorId   String
+  patientId  String
+  reason     String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  
+  doctor  User    @relation("DoctorEmergencies", fields: [doctorId], references: [id], onDelete: Cascade)
+  patient Patient @relation("PatientEmergencies", fields: [patientId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  role      String?
+  action    String
+  resource  String
+  ipAddress String?
+  result    String // SUCCESS, FAILURE
+  emergency Boolean  @default(false)
+  details   Json?
+  timestamp DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
