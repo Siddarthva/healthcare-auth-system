@@ -5,11 +5,11 @@ import { auditLogger } from '../../middleware/auditLogger';
 
 const router = Router();
 
-router.use(authenticateJWT, authorize('manage', 'Consent'));
+router.use(authenticateJWT);
 // usually patient applies this policy to their own consents via logic
 
-router.post('/', auditLogger('GRANT', 'Consent'), ConsentController.grant);
-router.patch('/:id/revoke', auditLogger('REVOKE', 'Consent'), ConsentController.revoke);
-router.get('/', auditLogger('LIST', 'Consent'), ConsentController.list);
+router.post('/', authorize('manage', 'Consent'), auditLogger('GRANT', 'Consent'), ConsentController.grant);
+router.patch('/:id/revoke', authorize('manage', 'Consent'), auditLogger('REVOKE', 'Consent'), ConsentController.revoke);
+router.get('/', authorize('read', 'Consent'), auditLogger('LIST', 'Consent'), ConsentController.list);
 
 export default router;

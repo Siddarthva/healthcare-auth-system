@@ -24,7 +24,7 @@ export class ConsentController {
 
     static async list(req: AuthenticatedRequest, res: Response, next: NextFunction) {
         try {
-            const consents = await ConsentService.list(req.user!.id);
+            const consents = await ConsentService.list(req.user!);
             res.json({ status: 'success', data: { consents } });
         } catch (error) {
             next(error);

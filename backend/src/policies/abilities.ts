@@ -14,8 +14,10 @@ export function defineAbilityFor(user: { id: string; role: string }) {
         can('read', 'Patient');
         can('update', 'Patient'); // Assume context check for assignment
         cannot('delete', 'Patient');
+        can('read', 'Consent');
     } else if (user.role === 'NURSE') {
         can('read', 'Patient'); // Restricted in specific handlers
+        can('read', 'Consent');
     } else if (user.role === 'PATIENT') {
         can('read', 'Patient'); // Restricted to self in handlers
         // Consents

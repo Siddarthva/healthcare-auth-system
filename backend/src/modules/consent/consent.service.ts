@@ -29,10 +29,17 @@ export class ConsentService {
         });
     }
 
-    static async list(patientUserId: string) {
-        return prisma.consent.findMany({
-            where: { patientId: patientUserId },
-            include: { staff: { select: { name: true, role: true } } },
-        });
+    static async list(user: { id: string; role: string }) {
+        if (user.role === 'PATIENT') {
+            return prisma.consent.findMany({
+                where: { patientId: user.id },
+                include: { staff: { select: { name: true, role: true } } },
+            });
+        } else {
+            return prisma.consent.findMany({
+                where: { staffId: user.id },
+                include: { patient: { select: { name: true, role: true } } },
+            });
+        }
     }
 }

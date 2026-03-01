@@ -92,7 +92,9 @@ const Consent = () => {
                     <div key={c.id} className="bg-dark-card border border-dark-border p-5 rounded-2xl flex flex-col justify-between group hover:border-dark-textMuted transition">
                         <div className="mb-4">
                             <div className="flex items-center justify-between">
-                                <h4 className="font-bold text-dark-text">{c.staff?.name || "Unknown Staff"}</h4>
+                                <h4 className="font-bold text-dark-text">
+                                    {user?.role === 'PATIENT' ? (c.staff?.name || "Unknown Staff") : (c.patient?.name || "Unknown Patient")}
+                                </h4>
                                 {c.status === 'ACTIVE' ? (
                                     <span className="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-1 rounded-md flex items-center gap-1 font-semibold">
                                         <Check size={12} /> Active
@@ -103,7 +105,7 @@ const Consent = () => {
                                     </span>
                                 )}
                             </div>
-                            <p className="text-xs text-dark-textMuted mt-1">Role: {c.staff?.role || '---'}</p>
+                            <p className="text-xs text-dark-textMuted mt-1">Role: {user?.role === 'PATIENT' ? (c.staff?.role || '---') : (c.patient?.role || 'PATIENT')}</p>
                             <p className="text-[10px] text-dark-textMuted mt-4 opacity-50 font-mono">ID: {c.id}</p>
                         </div>
 
