@@ -6,8 +6,8 @@ import api from '../services/api';
 import toast from 'react-hot-toast';
 
 const Login = () => {
-    const [email, setEmail] = useState('admin@hospital.com'); // Admin by default for demo
-    const [password, setPassword] = useState('Password123!');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const setLogin = useAuthStore((state) => state.setLogin);
@@ -64,7 +64,7 @@ const Login = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                                 className="w-full bg-dark-bg border border-dark-border rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition-all placeholder:text-dark-textMuted/50"
-                                placeholder="doctor@hospital.com"
+                                placeholder="sidarthvacharyaa@gmail.com"
                             />
                         </div>
                     </div>

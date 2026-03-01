@@ -38,7 +38,7 @@ async function run() {
     console.log('\n--- 2. AUTHENTICATION TEST SUITE ---');
 
     const uniqueExt = Date.now();
-    const testEmail = `test_${uniqueExt}@example.com`;
+    const testEmail = `test_${uniqueExt}@medauth.test`;
     const pwd = 'StrongPassword123!';
 
     await test('Register: Missing fields rejection', async () => {

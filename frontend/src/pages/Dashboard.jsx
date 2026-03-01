@@ -43,65 +43,8 @@ const Dashboard = () => {
         { label: 'Role Context', value: user?.role, icon: ShieldAlert, color: 'text-rose-400', bg: 'bg-rose-400/10' },
         { label: 'System Uptime', value: health?.uptime ? `${Math.floor(health.uptime / 60)} mins` : 'Pending', icon: Activity, color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
         { label: 'API Connection', value: health?.status === 'UP' ? 'Online' : 'Connecting...', icon: Power, color: 'text-teal-400', bg: 'bg-teal-400/10' },
-        { label: 'Demo Mode', value: 'Active', icon: CheckCircle, color: 'text-blue-400', bg: 'bg-blue-400/10' },
+        { label: 'Security Protocols', value: 'Active', icon: CheckCircle, color: 'text-blue-400', bg: 'bg-blue-400/10' },
     ];
-
-    const DemoGuide = () => {
-        return (
-            <div className="bg-dark-card border border-dark-border rounded-2xl p-6 md:p-8 mt-8 shadow-lg relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
-                <h2 className="text-xl font-bold flex items-center gap-3 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-500">
-                    <Info size={24} className="text-teal-500" />
-                    Interactive Demo Guide: {user?.role}
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-                    <div>
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-dark-textMuted mb-3">Your Capabilities</h3>
-                        <ul className="space-y-3 text-sm text-dark-text">
-                            {user?.role === 'ADMIN' && (
-                                <>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> View and manage all system users below.</li>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> <Link to="/audit-logs" className="text-teal-400 hover:underline">Monitor immutable Audit Logs</Link> tracking every action.</li>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> <Link to="/health" className="text-teal-400 hover:underline">Monitor Fleet Telemetry</Link> and health metrics.</li>
-                                </>
-                            )}
-                            {user?.role === 'DOCTOR' && (
-                                <>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> <Link to="/patients" className="text-teal-400 hover:underline">View assigned patients</Link> and their full medical records.</li>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> Call <Link to="/emergency" className="text-rose-400 hover:underline border-b border-rose-400/30">Emergency 'Break-Glass'</Link> access for unassigned patients.</li>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> Access granted to you via explicit Patient Consent.</li>
-                                </>
-                            )}
-                            {user?.role === 'NURSE' && (
-                                <>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> <Link to="/patients" className="text-teal-400 hover:underline">View assigned patients</Link> with ABAC-filtered medical records.</li>
-                                    <li className="flex items-start gap-2"><XCircle size={16} className="text-rose-500 mt-0.5 shrink-0" /> No emergency access override permitted.</li>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> Access granted to you via explicit Patient Consent.</li>
-                                </>
-                            )}
-                            {user?.role === 'PATIENT' && (
-                                <>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> <Link to="/patients" className="text-teal-400 hover:underline">View your own profile</Link> securely.</li>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> <Link to="/consent" className="text-teal-400 hover:underline">Manage active Consents</Link> granting access to specific staff.</li>
-                                    <li className="flex items-start gap-2"><CheckCircle size={16} className="text-teal-500 mt-0.5 shrink-0" /> Enforce data sovereignty across the platform.</li>
-                                </>
-                            )}
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-dark-textMuted mb-3">Live System Feedback</h3>
-                        <div className="bg-dark-bg border border-dark-border rounded-xl p-4 font-mono text-xs text-dark-textMuted space-y-2">
-                            <p>▹ Authentication: <span className="text-emerald-400">JWT Verified</span></p>
-                            <p>▹ RBAC Token: <span className="text-teal-400">{user?.role}</span></p>
-                            <p>▹ Context Identifier: <span className="text-blue-400">{user?.id}</span></p>
-                            <p>▹ Telemetry: <span className={health?.status === 'UP' ? 'text-emerald-400' : 'text-amber-400'}>{health?.status || 'PROBING...'}</span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    };
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
@@ -110,7 +53,7 @@ const Dashboard = () => {
                     <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent tracking-tight">
                         Welcome, {user?.name}
                     </h1>
-                    <p className="text-dark-textMuted mt-1">Healthcare Authorization Demo Portal</p>
+                    <p className="text-dark-textMuted mt-1">Healthcare Authorization Control Portal</p>
                 </div>
                 <div className="flex items-center gap-2 bg-dark-card border border-dark-border px-4 py-2 rounded-xl text-sm font-medium shadow-sm">
                     <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
@@ -132,7 +75,7 @@ const Dashboard = () => {
                 ))}
             </div>
 
-            <DemoGuide />
+
 
             {user?.role === 'ADMIN' && (
                 <div className="bg-dark-card border border-dark-border rounded-2xl shadow-lg overflow-hidden mt-8">

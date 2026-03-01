@@ -47,43 +47,38 @@ const App = () => {
 
   return (
     <>
-      <div className="bg-teal-500 text-dark-bg text-center text-xs sm:text-sm font-bold py-2 w-full z-50 fixed top-0 left-0 flex items-center justify-center gap-2">
-        <span>⚠️ DEMO MODE — Simulated Healthcare Environment</span>
-      </div>
-      <div className="pt-8 min-h-screen relative">
-        <Toaster position="top-right" toastOptions={{
-          style: {
-            background: '#1e293b',
-            color: '#f8fafc',
-            border: '1px solid #334155'
-          }
-        }} />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" replace />} />
-            <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to="/" replace />} />
+      <Toaster position="top-right" toastOptions={{
+        style: {
+          background: '#1e293b',
+          color: '#f8fafc',
+          border: '1px solid #334155'
+        }
+      }} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" replace />} />
+          <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to="/" replace />} />
 
-            {/* Protected Area */}
-            <Route path="/" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
-            <Route path="/patients" element={<ProtectedRoute><Layout><Patients /></Layout></ProtectedRoute>} />
+          {/* Protected Area */}
+          <Route path="/" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
+          <Route path="/patients" element={<ProtectedRoute><Layout><Patients /></Layout></ProtectedRoute>} />
 
-            <Route path="/consent" element={<ProtectedRoute allowedRoles={['PATIENT', 'ADMIN', 'DOCTOR', 'NURSE']}><Layout><Consent /></Layout></ProtectedRoute>} />
+          <Route path="/consent" element={<ProtectedRoute allowedRoles={['PATIENT', 'ADMIN', 'DOCTOR', 'NURSE']}><Layout><Consent /></Layout></ProtectedRoute>} />
 
-            <Route path="/emergency" element={<ProtectedRoute allowedRoles={['DOCTOR', 'ADMIN']}><Layout><Emergency /></Layout></ProtectedRoute>} />
+          <Route path="/emergency" element={<ProtectedRoute allowedRoles={['DOCTOR', 'ADMIN']}><Layout><Emergency /></Layout></ProtectedRoute>} />
 
-            <Route path="/assignments" element={<ProtectedRoute allowedRoles={['ADMIN']}><Layout><Assignments /></Layout></ProtectedRoute>} />
+          <Route path="/assignments" element={<ProtectedRoute allowedRoles={['ADMIN']}><Layout><Assignments /></Layout></ProtectedRoute>} />
 
-            <Route path="/privacy" element={<ProtectedRoute allowedRoles={['PATIENT']}><Layout><Privacy /></Layout></ProtectedRoute>} />
+          <Route path="/privacy" element={<ProtectedRoute allowedRoles={['PATIENT']}><Layout><Privacy /></Layout></ProtectedRoute>} />
 
-            <Route path="/audit-logs" element={<ProtectedRoute allowedRoles={['ADMIN']}><Layout><AuditLogs /></Layout></ProtectedRoute>} />
+          <Route path="/audit-logs" element={<ProtectedRoute allowedRoles={['ADMIN']}><Layout><AuditLogs /></Layout></ProtectedRoute>} />
 
-            <Route path="/health" element={<ProtectedRoute><Layout><Health /></Layout></ProtectedRoute>} />
+          <Route path="/health" element={<ProtectedRoute><Layout><Health /></Layout></ProtectedRoute>} />
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 };
